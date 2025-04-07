@@ -2,13 +2,26 @@
 
 ## Authors
 
-Tim Linke (UC Davis, LLNL)
-Niels Gronbech-Jensen (UC Davis)
+Tim Linke (UC Davis, LLNL), Niels Gronbech-Jensen (UC Davis)
 
 This repository holds an adaptation from the LAMMPS software package.
 It presents a clean and comprehensive form of the GJF method using the
 splitting form, changing the langevin dynamics input from force 
 evaluations to an integration of position and velocity.
+
+## Main changes
+
+We provide an updated formulation of the GJF method in the langevin framework. The fundamental functionality of the fix langevin is maintained, including the results obtained from the gjf option. In the new implementation, we have isolated noise and friction into two independent steps using the splitting formulation of the GJF method. This rewrite of the same algorithm allows a better integration with the NVE/fix langevin structure in LAMMPS. As a result, the new formulation solves several artifacts of the original implementation, including
+
+* Restart glitch in restart using either vfull or vhalf
+* Unnatural placing in input script of fix langevin gjf that differed from fix langevin
+* Now allows for user to compare implementation directly to equations in publication
+
+In addition, it improves memory performance, declutters the code by separating position and velocity treatment from force update and shortens code by 100+ lines.
+
+## Implementation Notes
+
+This fix is implemented by editing the files fix_langevin.cpp and fix_langevin.h. The documentation fix_langevin.rst is updated and now also clarifies correct attribution to the fix_langevin algorithm. The example/gjf files are updated, and new log files are provided. Correctness was verified via a direct comparison with the original implementation.
 
 
 ----------------------------------------------------------------------
